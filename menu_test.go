@@ -83,9 +83,9 @@ func TestEarlyMenuAdding(t *testing.T) {
 	for _, m := range rm.Children {
 		fmt.Println("main: " + m.Text)
 		for _, h := range m.Headers {
-			fmt.Println("head:--" + h.Text)
+			fmt.Println("head: --" + h.Text)
 			for _, s := range h.Subscripts {
-				fmt.Println("menu:----" + s.Text)
+				fmt.Println("menu: ----" + s.Text)
 			}
 		}
 	}
@@ -126,7 +126,7 @@ func TestEarlyLateAdding(t *testing.T) {
 	dms.MenuID = "perm"
 	dm.AddMenu(&dms)
 
-	// Add a new main menu
+	// Add a new main menu via root
 	em := rm.Add(&MainMenu{})
 	em.MenuID = "licenses"
 	em.Text = "Application Licenses"
@@ -165,9 +165,9 @@ func TestEarlyLateAdding(t *testing.T) {
 	for _, m := range rm.Children {
 		fmt.Println("main: " + m.Text)
 		for _, h := range m.Headers {
-			fmt.Println("head:--" + h.Text)
+			fmt.Println("head: --" + h.Text)
 			for _, s := range h.Subscripts {
-				fmt.Println("menu:----" + s.Text)
+				fmt.Println("menu: ----" + s.Text)
 			}
 		}
 	}
