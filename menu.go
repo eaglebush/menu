@@ -1,6 +1,8 @@
 package menu
 
-import "strings"
+import (
+	"strings"
+)
 
 //VisibilityType - the type of visibility
 type VisibilityType int
@@ -21,6 +23,7 @@ type BaseMenu struct {
 	Text        string
 	Icon        string
 	Link        string
+	OnClick     string
 	Visible     bool
 	Visibility  VisibilityType
 	Ordinal     int
@@ -32,6 +35,7 @@ type BaseMenu struct {
 type RootMenu struct {
 	Children    []MainMenu
 	Initialized bool
+	Logged      bool
 }
 
 // Menu - a common menu that can be rendered
@@ -69,6 +73,39 @@ func (rm *RootMenu) Add(menu *MainMenu) *MainMenu {
 	}
 
 	return cptr
+}
+
+// Evaluate - evaluates various properties set before being assigned to the template
+func (rm *RootMenu) Evaluate() {
+	for _, m := range rm.Children {
+		m.Visible = true
+		switch m.Visibility {
+		case LOGGED:
+			if !rm.Logged {
+				m.Visible = false
+			}
+		case NOTLOGGED:
+			if rm.Logged {
+				m.Visible = false
+			}
+		}
+
+		for _, h := range m.Headers {
+			for _, s := range h.Subscripts {
+				s.Visible = true
+				switch s.Visibility {
+				case LOGGED:
+					if !rm.Logged {
+						s.Visible = false
+					}
+				case NOTLOGGED:
+					if rm.Logged {
+						s.Visible = false
+					}
+				}
+			}
+		}
+	}
 }
 
 // AddHeader - add headers to the menu
